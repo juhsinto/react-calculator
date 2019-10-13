@@ -1,42 +1,68 @@
 import React from "react";
 import "./App.css";
+import Button from "./Button";
 
-const App = () => {
-  return (
-    <div className="ui text container">
-      <div className="ui horizontal section divider">MY STUPID CALCULATOR</div>
-      <div className="ui celled grid">
-        <div className="row">
-          <div className="twelve wide column ">123456789</div>
-          <div className="four wide column center aligned box">CLR</div>
+class App extends React.Component {
+  state = {
+    calculatorValue: 0,
+    buttonPressed: ""
+  };
+
+  onButtonSelect = button => {
+    console.log("user pressed ", button);
+    this.setState({ buttonPressed: button });
+  };
+
+  render() {
+    return (
+      <>
+        <div className="placeholder segment">
+          <div className="ui text container">
+            <div className="ui horizontal section divider">
+              MY STUPID CALCULATOR
+            </div>
+            <div className="ui celled grid">
+              <div className="row">
+                <div className="twelve wide column ">
+                  {this.state.calculatorValue}
+                </div>
+                <Button onButtonSelect={this.onButtonSelect} text="CLR" />
+              </div>
+              <div className="row">
+                <Button onButtonSelect={this.onButtonSelect} text="7" />
+                <Button onButtonSelect={this.onButtonSelect} text="8" />
+                <Button onButtonSelect={this.onButtonSelect} text="9" />
+                <Button onButtonSelect={this.onButtonSelect} text="÷" />
+              </div>
+              <div className="row">
+                <Button onButtonSelect={this.onButtonSelect} text="4" />
+                <Button onButtonSelect={this.onButtonSelect} text="5" />
+                <Button onButtonSelect={this.onButtonSelect} text="6" />
+                <Button onButtonSelect={this.onButtonSelect} text="×" />
+              </div>
+              <div className="row">
+                <Button onButtonSelect={this.onButtonSelect} text="1" />
+                <Button onButtonSelect={this.onButtonSelect} text="2" />
+                <Button onButtonSelect={this.onButtonSelect} text="3" />
+                <Button onButtonSelect={this.onButtonSelect} text="-" />
+              </div>
+              <div className="row">
+                <Button onButtonSelect={this.onButtonSelect} text="." />
+                <Button onButtonSelect={this.onButtonSelect} text="0" />
+                <Button onButtonSelect={this.onButtonSelect} text="=" />
+                <Button onButtonSelect={this.onButtonSelect} text="+" />
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="row">
-          <div className="four wide column center aligned">7</div>
-          <div className="four wide column center aligned">8</div>
-          <div className="four wide column center aligned">9</div>
-          <div className="four wide column center aligned">÷</div>
+        <div className="placeholder segment">
+          <div className="ui column centered grid">
+            user pressed: {this.state.buttonPressed}
+          </div>
         </div>
-        <div className="row">
-          <div className="four wide column center aligned">4</div>
-          <div className="four wide column center aligned">5</div>
-          <div className="four wide column center aligned">6</div>
-          <div className="four wide column center aligned">×</div>
-        </div>
-        <div className="row">
-          <div className="four wide column center aligned">1</div>
-          <div className="four wide column center aligned">2</div>
-          <div className="four wide column center aligned">3</div>
-          <div className="four wide column center aligned">-</div>
-        </div>
-        <div className="row">
-          <div className="four wide column center aligned">.</div>
-          <div className="four wide column center aligned">0</div>
-          <div className="four wide column center aligned">=</div>
-          <div className="four wide column center aligned">+</div>
-        </div>
-      </div>
-    </div>
-  );
-};
+      </>
+    );
+  }
+}
 
 export default App;
