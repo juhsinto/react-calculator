@@ -4,13 +4,78 @@ import Button from "./Button";
 
 class App extends React.Component {
   state = {
-    calculatorValue: 0,
-    buttonPressed: ""
+    displayValue: 0,
+    firstOperand: 0,
+    secondOperand: 0,
+
+    hasDecimal: false,
+    buttonPressed: "",
+    operatorSelected: ""
   };
 
   onButtonSelect = button => {
     console.log("user pressed ", button);
-    this.setState({ buttonPressed: button });
+    if (this.state.displayValue === 0) {
+      this.setState({ buttonPressed: button });
+      this.setState({ displayValue: button });
+    } else {
+      if (button === ".") {
+        this.setState({ buttonPressed: button });
+        // handle decimal - add a dot only once!
+        if (this.state.hasDecimal) {
+          console.log(" already have a decimal in the input");
+        } else {
+          let decimalString = this.state.displayValue + ".";
+          console.log(decimalString);
+          this.setState({ displayValue: decimalString });
+          this.setState({ hasDecimal: true });
+        }
+      } else {
+        // HANDLE CLR & EQUAL
+        if (button === "CLR") {
+          // don't put this in display, butneed to dispatch action
+          this.setState({ buttonPressed: button });
+          this.setState({ displayValue: 0 });
+        } else if (button === "=") {
+          // don't put this in display, butneed to dispatch action
+          this.setState({ buttonPressed: button });
+
+          // HANDLE OPERATORS
+        } else if (button === "-") {
+          let test = parseFloat(this.state.displayValue);
+          console.log("parse the display value " + test);
+          this.setState({
+            operatorSelected: button,
+            firstOperand: test,
+            buttonPressed: button
+          });
+
+          console.log("first operand is " + this.state.firstOperand);
+          // console.log(
+          //   "user pressed subtract and first operand is: " +
+          //     this.state.firstOperand
+          // );
+          // // set the second operand to be the same value, unless changed
+          // this.setState({ secondOperand: Number(this.state.displayValue) });
+
+          // // just for now! later this will occur on the equals
+          // // console.log(this.state.firstOperand - this.state.secondOperand);
+        } else if (button === "×") {
+          // don't put this in display, butneed to dispatch action
+          this.setState({ buttonPressed: button });
+        } else if (button === "÷") {
+          // don't put this in display, butneed to dispatch action
+          this.setState({ buttonPressed: button });
+        } else if (button === "+") {
+          // don't put this in display, butneed to dispatch action
+          this.setState({ buttonPressed: button });
+        } else {
+          this.setState({ buttonPressed: button });
+          let numberString = this.state.displayValue + button;
+          this.setState({ displayValue: numberString });
+        }
+      }
+    }
   };
 
   render() {
@@ -24,7 +89,7 @@ class App extends React.Component {
             <div className="ui celled grid">
               <div className="row">
                 <div className="twelve wide column ">
-                  {this.state.calculatorValue}
+                  {this.state.displayValue}
                 </div>
                 <Button onButtonSelect={this.onButtonSelect} text="CLR" />
               </div>
