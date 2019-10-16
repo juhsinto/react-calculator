@@ -9,6 +9,7 @@ class App extends React.Component {
     secondOperand: 0,
 
     hasDecimal: false,
+    arithmeticOperation: false,
     buttonPressed: "",
     operatorSelected: ""
   };
@@ -34,32 +35,51 @@ class App extends React.Component {
         // HANDLE CLR & EQUAL
         if (button === "CLR") {
           // don't put this in display, butneed to dispatch action
-          this.setState({ buttonPressed: button });
-          this.setState({ displayValue: 0 });
+          this.setState({
+            buttonPressed: button,
+            displayValue: 0,
+            firstOperand: 0,
+            secondOperand: 0,
+            hasDecimal: false,
+            arithmeticOperation: false,
+            operatorSelected: ""
+          });
+          this.setState({});
         } else if (button === "=") {
-          // don't put this in display, butneed to dispatch action
-          this.setState({ buttonPressed: button });
+          // don't put this in display, but need to dispatch action
+          // TODO - (not sure?) - clear values of first operand, second operand after arithmetic op
+          // at the moment, it seems like a feature (how current macOS calc works)!
+          this.setState(
+            {
+              buttonPressed: button,
+              secondOperand: parseFloat(this.state.displayValue)
+            },
+            () => {
+              this.setState({
+                displayValue: this.state.firstOperand - this.state.secondOperand
+              });
+              console.log(this.state.firstOperand - this.state.secondOperand);
+            }
+          );
 
           // HANDLE OPERATORS
         } else if (button === "-") {
-          let test = parseFloat(this.state.displayValue);
-          console.log("parse the display value " + test);
-          this.setState({
-            operatorSelected: button,
-            firstOperand: test,
-            buttonPressed: button
-          });
-
-          console.log("first operand is " + this.state.firstOperand);
-          // console.log(
-          //   "user pressed subtract and first operand is: " +
-          //     this.state.firstOperand
-          // );
-          // // set the second operand to be the same value, unless changed
-          // this.setState({ secondOperand: Number(this.state.displayValue) });
-
-          // // just for now! later this will occur on the equals
-          // // console.log(this.state.firstOperand - this.state.secondOperand);
+          this.setState(
+            {
+              operatorSelected: button,
+              firstOperand: parseFloat(this.state.displayValue),
+              buttonPressed: button
+            },
+            () => {
+              console.log(
+                "user pressed subtract and first operand is: " +
+                  this.state.firstOperand
+              );
+              // since the has done an arithmetic operation,
+              // clear the display for second operand entry
+              this.setState({ displayValue: 0, arithmeticOperation: true });
+            }
+          );
         } else if (button === "×") {
           // don't put this in display, butneed to dispatch action
           this.setState({ buttonPressed: button });
